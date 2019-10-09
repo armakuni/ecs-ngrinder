@@ -1,0 +1,15 @@
+version: 1
+task_definition:
+  task_execution_role: ngrider-cluster-7c6fb9544489339f
+  ecs_network_mode: awsvpc
+  task_size:
+    mem_limit: 0.5GB
+    cpu_limit: 256
+run_params:
+  network_configuration:
+    awsvpc_configuration:
+      subnets:
+        - subnet-03d5ecf2b7074a2f2
+      security_groups:
+        - sg-094d4d230636eafa3
+      assign_public_ip: ENABLED
