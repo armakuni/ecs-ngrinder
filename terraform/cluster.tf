@@ -2,6 +2,10 @@ locals {
   plaform_name = "${var.platform_name}-${random_id.platform_name_suffix.hex}"
 }
 
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
 resource "aws_iam_role" "task_execution_role" {
   name = local.plaform_name
 
@@ -31,12 +35,23 @@ resource "aws_ecs_cluster" "ecs_cluster" {
   name = local.plaform_name
 }
 
-data "aws_vpc" "default_vpc" {
-  default = true
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "2.17.0"
+
+  name = local.plaform_name
+  cidr = "10.0.0.0/23"
+
+  azs             = data.aws_availability_zones.available.names
+  private_subnets = ["10.0.0.0/24"]
+  public_subnets  = ["10.0.1.0/24"]
+
+  enable_nat_gateway = true
+  enable_vpn_gateway = true
 }
 
 resource "aws_security_group" "security_group" {
-  vpc_id = data.aws_vpc.default_vpc.id
+  vpc_id = module.vpc.default_vpc_id
   name   = local.plaform_name
 }
 
