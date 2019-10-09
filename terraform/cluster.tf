@@ -12,7 +12,7 @@ data "aws_vpc" "default_vpc" {
 
 resource "aws_security_group" "security_group" {
   vpc_id = data.aws_vpc.default_vpc.id
-  name = local.plaform_name
+  name   = local.plaform_name
 }
 
 resource "aws_security_group_rule" "http_ingress" {
@@ -20,7 +20,7 @@ resource "aws_security_group_rule" "http_ingress" {
   protocol          = "tcp"
   security_group_id = aws_security_group.security_group.id
   to_port           = 80
-  cidr_blocks = ["0.0.0.0/0"]
+  cidr_blocks       = ["0.0.0.0/0"]
   type              = "ingress"
 }
 

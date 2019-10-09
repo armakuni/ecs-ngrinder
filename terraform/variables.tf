@@ -3,5 +3,5 @@ variable "aws_region" {
 }
 
 variable "platform_name" {
-    type = "string"
+  type = "string"
 }
